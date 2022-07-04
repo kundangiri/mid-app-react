@@ -5,8 +5,8 @@ import { formatter } from "../utils";
 
 const ProductTracker = ({ products, setProducts }) => {
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState();
-  const [amount, setAmount] = useState();
+  const [quantity, setQuantity] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [addDisable, setAddDisable] = useState(false);
   const [updateDisable, setUpdateDisable] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState("");

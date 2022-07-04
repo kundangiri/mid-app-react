@@ -7,9 +7,9 @@ const BillingList = ({ products }) => {
   const [entry, setEntry] = useState([]);
   const [product, setProduct] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
-  const [quantity, setQuantity] = useState();
-  const [amount, setAmount] = useState();
-  const [addDisable, setAddDisable] = useState(false);
+  const [quantity, setQuantity] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [addDisable, setAddDisable] = useState(true);
   const [updateDisable, setUpdateDisable] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState("");
   const [cancelDisable, setCancelDisable] = useState(true);
@@ -137,17 +137,29 @@ const BillingList = ({ products }) => {
           onKeyUp={handlePressEnterAtExpense}
           value={selectedProduct}
           ref={expenseRef}
-          onChange={(e) => {
-            setSelectedProduct(e.target.value);
-            const productId = parseInt(e.target.value);
-            const pro = products.filter((p) => p.id === productId);
-            setAmount(pro[0].amount);
-            setQuantity(pro[0].quantity);
-            setProduct(pro[0].name);
+          onChange={async (e) => {
+            if (e.target.value === "none") {
+              setSelectedProduct(e.target.value);
+              handleReset();
+              setAddDisable(true);
+            } else {
+              setSelectedProduct(e.target.value);
+              const productId = parseInt(e.target.value);
+              const pro = await products.filter((p) => p.id === productId);
+              setAmount(pro[0].amount);
+              setQuantity(pro[0].quantity);
+              setProduct(pro[0].name);
+              setAddDisable(false);
+            }
           }}
         >
+          <option defaultValue value="none">
+            None
+          </option>
           {products.map((item) => (
-            <option value={item.id}>{item.name}</option>
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
           ))}
         </select>
 
