@@ -1,0 +1,23 @@
+.entry {
+    display: flex;
+    width: 60%;
+    margin: 10px auto;
+    height: 40px;
+    padding: 10px 0; border-bottom: 1px solid black;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.4s;
+}
+
+.entry:hover {
+    background-color: black;
+    transition:1s
+}
+
+.entry:hover span {
+    color: white;
+}
+
+.selected-entry {
+    background-color: rgb(195, 212, 195);
+}

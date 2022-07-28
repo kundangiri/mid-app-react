@@ -1,10 +1,11 @@
 import "./App.css";
-import BillingList from "./constants/BillingList";
-import CashFlowTracker from "./constants/CashFlowTracker";
-import ExpenseTracker from "./constants/ExpenseTracker";
-import ProductTracker from "./constants/ProductsList";
-import Register from "./constants/StudentsRegister";
+import BillingList from "./components/BillingList";
+import CashFlowTracker from "./components/CashFlowTracker";
+import ExpenseTracker from "./components/ExpenseTracker";
+import ProductTracker from "./components/ProductsList";
+import Register from "./components/StudentsRegister";
 import { useState } from "react";
+import Temp from "./components/temp";
 
 function App() {
   const [listedProducts, setListedProducts] = useState([]);

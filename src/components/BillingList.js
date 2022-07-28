@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { formatter } from "../utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BillingList = ({ products }) => {
   const [entry, setEntry] = useState([]);
@@ -83,6 +85,7 @@ const BillingList = ({ products }) => {
     setUpdateDisable(true);
     setAddDisable(false);
     setCancelDisable(true);
+    setSelectedEntry("");
   };
 
   const handleEditEntry = (id) => {
@@ -95,14 +98,17 @@ const BillingList = ({ products }) => {
     setUpdateDisable(false);
     setCancelDisable(false);
   };
-
+  const notify = () => toast("Wow so easy!");
   return (
-    <div>
+    <div className="container  ">
       <h1>Billing List</h1>
+
       {entry.map((student) => (
         <div
           key={student.id}
-          className={selectedEntry?.id === student.id ? "selected-entry" : ""}
+          className={`entry ${
+            selectedEntry?.id === student.id ? "selected-entry" : ""
+          }`}
         >
           <span>
             {student.id}
@@ -131,78 +137,103 @@ const BillingList = ({ products }) => {
       <span>{formatter.format(entry.reduce((a, v) => a + +v.amount, 0))}</span>
 
       <form action="">
-        <select
-          autoFocus
-          placeholder="Enter Product"
-          onKeyUp={handlePressEnterAtExpense}
-          value={selectedProduct}
-          ref={expenseRef}
-          onChange={async (e) => {
-            if (e.target.value === "none") {
-              setSelectedProduct(e.target.value);
-              handleReset();
-              setAddDisable(true);
-            } else {
-              setSelectedProduct(e.target.value);
-              const productId = parseInt(e.target.value);
-              const pro = await products.filter((p) => p.id === productId);
-              setAmount(pro[0].amount);
-              setQuantity(pro[0].quantity);
-              setProduct(pro[0].name);
-              setAddDisable(false);
-            }
+        <div className="form-group  d-flex justify-center mt-4">
+          <select
+            className="form-control"
+            autoFocus
+            placeholder="Enter Product"
+            onKeyUp={handlePressEnterAtExpense}
+            value={selectedProduct}
+            ref={expenseRef}
+            onChange={async (e) => {
+              if (e.target.value === "none") {
+                setSelectedProduct(e.target.value);
+                handleReset();
+                setAddDisable(true);
+              } else {
+                setSelectedProduct(e.target.value);
+                const productId = parseInt(e.target.value);
+                const pro = await products.filter((p) => p.id === productId);
+                setAmount(pro[0].amount);
+                setQuantity(pro[0].quantity);
+                setProduct(pro[0].name);
+                setAddDisable(false);
+              }
+            }}
+          >
+            <option defaultValue value="none">
+              None
+            </option>
+            {products.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+
+          <input
+            className="form-control"
+            onKeyUp={handlePressEnterAtAmount}
+            placeholder="Enter Amount"
+            value={amount}
+            ref={amountRef}
+            onChange={(e) => {
+              setAmount(e.target.value);
+            }}
+            disabled={true}
+            type="number"
+          />
+          <input
+            className="form-control"
+            onKeyUp={handlePressEnterAtQuantity}
+            value={quantity}
+            ref={quantityRef}
+            onChange={(e) => {
+              setQuantity(e.target.value);
+            }}
+            type="number"
+          />
+          {cancelDisable ? null : (
+            <button className="btn btn-danger" onClick={handleReset}>
+              x
+            </button>
+          )}
+        </div>
+      </form>
+      <div className="container mt-8 flex justify-center mb-60">
+        {addDisable ? null : (
+          <button
+            className="btn btn-primary "
+            disabled={addDisable}
+            onClick={handleSetEntries}
+          >
+            Add
+          </button>
+        )}
+        {updateDisable ? null : (
+          <button
+            className="btn btn-secondary"
+            disabled={updateDisable}
+            onClick={handleUpdateEntries}
+          >
+            Update
+          </button>
+        )}
+        <button
+          className="btn btn-danger ml-10"
+          onClick={() => {
+            setEntry([]);
+            handleReset();
           }}
         >
-          <option defaultValue value="none">
-            None
-          </option>
-          {products.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+          Clear all
+        </button>
+      </div>
 
-        <input
-          onKeyUp={handlePressEnterAtAmount}
-          placeholder="Enter Amount"
-          value={amount}
-          ref={amountRef}
-          onChange={(e) => {
-            setAmount(e.target.value);
-          }}
-          disabled={true}
-          type="number"
-        />
-        <input
-          onKeyUp={handlePressEnterAtQuantity}
-          value={quantity}
-          ref={quantityRef}
-          onChange={(e) => {
-            setQuantity(e.target.value);
-          }}
-          type="number"
-        />
-        {cancelDisable ? null : <button onClick={handleReset}>x</button>}
-      </form>
-      {addDisable ? null : (
-        <button disabled={addDisable} onClick={handleSetEntries}>
-          Add
-        </button>
-      )}
-      {updateDisable ? null : (
-        <button disabled={updateDisable} onClick={handleUpdateEntries}>
-          Update
-        </button>
-      )}
-      <button
-        onClick={() => {
-          setEntry([]);
-          handleReset();
-        }}
-      >
-        Clear all
-      </button>
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+      </div>
     </div>
   );
 };
