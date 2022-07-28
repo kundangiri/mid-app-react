@@ -231,7 +231,9 @@ const BillingList = ({ products }) => {
       </div>
 
       <div>
-        <button onClick={notify}>Notify!</button>
+        <button className="btn btn-primary" onClick={notify}>
+          Notify!
+        </button>
         <ToastContainer />
       </div>
     </div>
