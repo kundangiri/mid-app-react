@@ -5,11 +5,10 @@ import ExpenseTracker from "./components/ExpenseTracker";
 import ProductTracker from "./components/ProductsList";
 import Register from "./components/StudentsRegister";
 import { useState } from "react";
-<<<<<<< HEAD
+
 import Temp from "./components/temp";
-=======
+
 import New from "./constants/new";
->>>>>>> 65674bcd39c052f0718c82ba932c12713ff845c0
 
 function App() {
   const [listedProducts, setListedProducts] = useState([]);
@@ -23,7 +22,7 @@ function App() {
         setProducts={setListedProducts}
       />
       <BillingList products={listedProducts} />
-      <New/>
+      <New />
     </div>
   );
 }
