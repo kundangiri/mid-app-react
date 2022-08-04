@@ -1,5 +1,6 @@
 import "./App.css";
 import BillingList from "./components/BillingList";
+import BillingList2 from "./components/BillingList2";
 import CashFlowTracker from "./components/CashFlowTracker";
 import ExpenseTracker from "./components/ExpenseTracker";
 import ProductTracker from "./components/ProductsList";
@@ -11,7 +12,8 @@ import { AiOutlineHome } from "react-icons/ai";
 import { BsCashCoin } from "react-icons/bs";
 
 import { Routes, Route, Link, NavLink } from "react-router-dom";
-
+import { Context } from "./contexts/ProductsContext";
+import { ProductsProvider } from "./contexts/ProductsContext2";
 const routes = [
   {
     path: "/",
@@ -76,6 +78,7 @@ function App() {
           <NavLink to={"/expenses"}>Expenses</NavLink>
           <NavLink to={"/products"}>Products</NavLink>
           <NavLink to={"/billing"}>Billing</NavLink>
+          <NavLink to={"/billing2"}>Billing 2</NavLink>
         </nav>
       </div>
       <div className="main-container">
@@ -103,38 +106,46 @@ function App() {
           </nav>
         </div> */}
         <div className="main-page">
-          <Routes>
-            <Route path="/" element={<New />} />
-            <Route path="/cashflow" element={<CashFlowTracker />} />
-            <Route path="/expenses" element={<ExpenseTracker />} />
-            <Route
-              path="/products"
-              element={
-                <ProductTracker
-                  products={listedProducts}
-                  setProducts={setListedProducts}
+          <ProductsProvider>
+            <Context.Provider value={listedProducts}>
+              <Routes>
+                <Route path="/" element={<New />} />
+                <Route path="/cashflow" element={<CashFlowTracker />} />
+                <Route path="/expenses" element={<ExpenseTracker />} />
+                <Route
+                  path="/products"
+                  element={
+                    <ProductTracker
+                      products={listedProducts}
+                      setProducts={setListedProducts}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path="/billing"
-              element={<BillingList products={listedProducts} />}
-            />
-            <Route
-              path="*"
-              element={
-                <div
-                  style={{
-                    minHeight: "80vh",
-                    backgroundColor: "#ef0909",
-                    width: "100vh",
-                  }}
-                >
-                  <h1>404- Page not Found</h1>
-                </div>
-              }
-            />
-          </Routes>
+                <Route
+                  path="/billing"
+                  element={<BillingList products={listedProducts} />}
+                />
+                <Route
+                  path="/billing2"
+                  element={<BillingList2 products={listedProducts} />}
+                />
+                <Route
+                  path="*"
+                  element={
+                    <div
+                      style={{
+                        minHeight: "80vh",
+                        backgroundColor: "#ef0909",
+                        width: "100vh",
+                      }}
+                    >
+                      <h1>404- Page not Found</h1>
+                    </div>
+                  }
+                />
+              </Routes>
+            </Context.Provider>
+          </ProductsProvider>
         </div>
       </div>
       <h1

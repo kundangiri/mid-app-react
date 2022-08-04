@@ -1,7 +1,6 @@
-
 .App {
   text-align: center;
- 
+
 }
 
 .App-logo {
@@ -34,6 +33,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -41,9 +41,70 @@
 
 .App .main-page {
   min-height: 80vh;
-  
+
   margin-top: 50px;
 
+}
+
+.App .main-container {
+  margin-top: 65px;
+}
+
+.entries-container {
+  border: 1px solid grey;
+  width: 70%;
+  margin: 20px auto;
+  border-radius: 10px;
+  background-color: rgb(173, 183, 183)
+}
+
+.header,
+.entry {
+  display: flex;
+  width: 60%;
+  margin: 10px auto;
+  height: 40px;
+  border-bottom: 1px solid black;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.4s;
+}
+
+.entry:hover {
+  background-color: black;
+}
+
+.entry:hover span {
+  color: white;
+}
+
+.selected-entry {
+  background-color: rgb(195, 212, 195);
+}
+
+.header .sn,
+.entry .sn {
+  flex-basis: 4%;
+}
+
+.header .transaction,
+.header .date,
+.entry .transaction,
+.entry .date {
+  flex-basis: 20%;
+  text-align: left;
+}
+
+.header .amount,
+.entry .amount {
+  flex-basis: 15%;
+}
+
+.header .actions,
+.entry .actions {
+  flex-basis: 20%;
+  display: flex;
+  justify-content: space-around;
 }
 
 
@@ -54,13 +115,14 @@
 
 .App .sidebar {
   padding-top: 100px;
-    background: crimson;
-    min-height: 100vh;
+  background: crimson;
+  min-height: 100vh;
 }
+
 .App .sidebar nav .active {
   background-color: rgb(5, 11, 5);
   color: rgb(241, 235, 235);
-  
+
 }
 
 
@@ -70,20 +132,24 @@
   display: flex;
   align-items: flex-end;
 }
+
 .App .sidebar nav a span {
   margin-left: 10px;
 }
+
 nav a {
   padding: 10px 15px;
   border-radius: 8px;
   transition: all 0.45s;
   text-decoration: none;
-  color:rgb(1, 1, 1);
+  color: rgb(1, 1, 1);
 }
+
 nav a:hover {
-  background-color:rgb(52, 56, 52);
-  color:blanchedalmond;
+  background-color: rgb(52, 56, 52);
+  color: blanchedalmond;
 }
+
 .App nav .active {
   background-color: rgb(41, 190, 41);
   color: rgb(241, 235, 235);

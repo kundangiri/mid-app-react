@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiTwotoneEdit } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 import { formatter } from "../utils";
 
 const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
-  const [entry, setEntry] = useState(expenses || []);
+  const [entries, setEntries] = useState(expenses || []);
 
   const [transaction, setTransaction] = useState("");
   const [date, setDate] = useState();
@@ -51,10 +52,10 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
   };
 
   const handleSetEntries = (e) => {
-    setEntry([
-      ...entry,
+    setEntries([
+      ...entries,
       {
-        id: entry.length + 1,
+        id: entries.length + 1,
         transaction: transaction,
         date: date,
         amount: amount,
@@ -65,8 +66,8 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
   };
 
   const handleUpdateEntries = () => {
-    setEntry(
-      entry.map((item) =>
+    setEntries(
+      entries.map((item) =>
         item.id === selectedEntry.id
           ? { ...item, transaction: transaction, date: date, amount: amount }
           : item
@@ -76,7 +77,7 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
   };
 
   const handleRemoveEntry = (id) => {
-    setEntry(entry.filter((entry) => entry.id !== id));
+    setEntries(entries.filter((entries) => entries.id !== id));
   };
   const handleReset = () => {
     setTransaction("");
@@ -88,7 +89,7 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
   };
 
   const handleEditEntry = (id) => {
-    const entryToEdit = entry.find((entry) => entry.id === id);
+    const entryToEdit = entries.find((entries) => entries.id === id);
     setSelectedEntry(entryToEdit);
     setTransaction(entryToEdit.transaction);
     setDate(entryToEdit.date);
@@ -101,66 +102,88 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
   return (
     <div>
       <h1>CashFlow Tracker</h1>
-      {entry.map((student) => (
-        <div
-          key={student.id}
-          className={selectedEntry?.id === student.id ? "selected-entry" : ""}
-        >
-          <span>
-            {student.id}
-            {". "}
-          </span>
-          <span>{student.transaction} </span>
-          <span>{student.date} </span>
-          <span>
-            {"$"}
-            {student.amount}{" "}
-          </span>
-          <FiEdit
-            color="blue"
-            onClick={() => {
-              handleEditEntry(student.id);
-            }}
-          />
-          <AiFillDelete
-            color="red"
-            onClick={() => {
-              handleRemoveEntry(student.id);
-            }}
-          />
+      <div className="entries-container">
+        <div className={`header`}>
+          <div className="sn">
+            <span>SN</span>
+          </div>
+          <div className="transaction">
+            <span>Transaction</span>
+          </div>
+          <div className="date">
+            <span>Date</span>
+          </div>
+          <div className="amount">
+            <span>Amount</span>
+          </div>
+          <div className="actions">
+          </div>
         </div>
-      ))}
-      <li>
-        <span>Total Expenses - </span>
-        <span>
-          {formatter.format(
-            entry
-              .filter((a) => a.type === "expense")
-              .reduce((a, v) => a + +v.amount, 0)
-          )}
-        </span>
-      </li>
-      <li>
-        <span>Total Income - </span>
-        <span>
-          {formatter.format(
-            entry
-              .filter((a) => a.type === "income")
-              .reduce((a, v) => a + +v.amount, 0)
-          )}
-        </span>
-      </li>
-      <li>
-        <span>Net Balance - </span>
-        <span>
-          {formatter.format(
-            entry.reduce(
-              (a, v) => (v.type === "income" ? a + +v.amount : a - +v.amount),
-              0
-            )
-          )}
-        </span>
-      </li>
+        {entries.map((s) => (
+          <div
+            key={s.id}
+            className={`${selectedEntry?.id === s.id ? "selected-entry" : ""
+              } entry`}
+          >
+            <div className="sn">
+              <span>{s.id} </span>
+            </div>
+            <div className="transaction">
+              <span>{s.transaction}</span>
+            </div>
+            <div className="date">
+              <span>{s.date}</span>
+            </div>
+            <div className="amount">
+              <span>{formatter.format(s.amount)}</span>
+            </div>
+            <div className="actions">
+              <AiTwotoneEdit
+                color="blue"
+                size={15}
+                onClick={() => handleEditEntry(s)}
+              />
+              <FaTrash
+                color="red"
+                size={15}
+                onClick={() => handleRemoveEntry(s.id)}
+              />
+            </div>
+          </div>
+        ))}
+        <li>
+          <span>Total Expenses - </span>
+          <span>
+            {formatter.format(
+              entries
+                .filter((a) => a.type === "expense")
+                .reduce((a, v) => a + +v.amount, 0)
+            )}
+          </span>
+        </li>
+        <li>
+          <span>Total Income - </span>
+          <span>
+            {formatter.format(
+              entries
+                .filter((a) => a.type === "income")
+                .reduce((a, v) => a + +v.amount, 0)
+            )}
+          </span>
+        </li>
+        <li>
+          <span>Net Balance - </span>
+          <span>
+            {formatter.format(
+              entries.reduce(
+                (a, v) => (v.type === "income" ? a + +v.amount : a - +v.amount),
+                0
+              )
+            )}
+          </span>
+        </li>
+      </div>
+
 
       <form action="">
         <label htmlFor="type">
@@ -215,7 +238,7 @@ const CashFlowTracker = ({ batch, faculty, college, expenses }) => {
       )}
       <button
         onClick={() => {
-          setEntry([]);
+          setEntries([]);
         }}
       >
         Clear all

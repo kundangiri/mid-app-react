@@ -1,10 +1,8 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { formatter } from "../utils";
 import "../style/index.css";
-import { Context } from "../contexts/ProductsContext";
-import { Context as Context2 } from "../contexts/ProductsContext2";
 
 const ProductTracker = ({ products, setProducts }) => {
   const [name, setName] = useState("");
@@ -18,9 +16,6 @@ const ProductTracker = ({ products, setProducts }) => {
   const expenseRef = useRef(null);
   const quantityRef = useRef(null);
   const amountRef = useRef(null);
-
-  const dataa = useContext(Context);
-  const { data, addProduct } = useContext(Context2);
 
   const handlePressEnterAtExpense = (e) => {
     if (e.key === "Enter") {
@@ -52,14 +47,7 @@ const ProductTracker = ({ products, setProducts }) => {
     }
   };
 
-  console.log(data, 'check data in Product context 2')
   const handleSetEntries = (e) => {
-    addProduct({
-      id: products.length + 1,
-      name: name,
-      quantity: quantity,
-      amount: amount,
-    });
     setProducts([
       ...products,
       {
@@ -105,8 +93,6 @@ const ProductTracker = ({ products, setProducts }) => {
     setUpdateDisable(false);
     setCancelDisable(false);
   };
-  console.log(Context, 'context')
-  console.log(dataa, 'context dataa');
 
   return (
     <div className="mb-20">
@@ -115,8 +101,9 @@ const ProductTracker = ({ products, setProducts }) => {
         {products.map((student) => (
           <div
             key={student.id}
-            className={`entry ${selectedEntry?.id === student.id ? "selected-entry" : ""
-              }`}
+            className={`entry ${
+              selectedEntry?.id === student.id ? "selected-entry" : ""
+            }`}
           >
             <div className="entry">
               <span>
